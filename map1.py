@@ -7,22 +7,14 @@ lon=list(data['LON'])
 elev=list(data['ELEV'])
 type=list(data['TYPE'])
 
-def color_producer(tipo): # defines a color palette based on the type of vulcano
-    if tipo =="Stratovolcano" or tipo =="Stratovolcanoes":
-        return 'red'
-    elif tipo == "Caldera" or tipo=="Maars" or tipo=="Maar" or tipo=="Calderas":
-        return 'lightblue'
-    elif tipo == "Volcanic field":
-        return 'lightgreen'
-    elif tipo == "Cinder cones" or tipo=="Cinder cone" :
-        return 'gray'
-    elif tipo=="Lava domes":
-        return 'black'
-    elif tipo=="Fissure vents" :
-        return 'orange'
-    elif tipo=="Shield volcano" or tipo =="Shield volcanoes":
-        return 'lightbrown'
-    else : return 'blue'#shouldn't happen
+
+ tipo = {"Stratovolcano" or "Stratovolcanoes" : 'red',
+     "Caldera" or "Maars" or "Maar" or "Calderas" : 'lightblue',
+     "Volcanic field" : 'lightgreen',
+     "Cinder cones" or "Cinder cone" : 'gray',
+     "Lava domes" : 'black',
+     "Fissure vents" : 'orange',
+     "Shield volcano" or "Shield volcanoes" : 'lightbrown'} # defines a color palette based on the type of vulcano
 
 
 map = folium.Map(location=[38, 15], zoom_start=2) # imports world map,defines map center and broadness of view
@@ -30,7 +22,9 @@ map = folium.Map(location=[38, 15], zoom_start=2) # imports world map,defines ma
 fgv = folium.FeatureGroup(name="Volcanoes")#defines a feature group for volcanoes
 
 for lt, ln, el, tp in zip(lat, lon, elev, type):
-    fgv.add_child(folium.CircleMarker(location=[lt, ln], radius = 8, popup=str(el)+" m", fill_color=color_producer(tp), color='grey' , fill=True, fill_opacity=0.8))#adds a loop defining the chracteristics of Volcanoes_USA.txt file and assigning custom style and color palette(defined earlier)
+    fgv.add_child(folium.CircleMarker(location=[lt, ln],
+     radius = 8, popup=str(el)+" m", fill_color=tipo.get(tp,'blue'),
+     color='grey' , fill=True, fill_opacity=0.8))#adds a loop defining the chracteristics of Volcanoes_USA.txt file and assigning custom style and color palette(defined earlier)
 
 
 fgp = folium.FeatureGroup(name="population")#defines a feature group for population
